@@ -21,7 +21,7 @@ $(function () {
                     Authorization: 'Client-ID f957f05bea2a82a'
                 },
                 data: {
-                    image: dataUrl.split(',')[0],
+                    image: dataUrl.split(',')[1],
                     type: 'base64',
                     title: currentTab.title,
                     description: 'Snaped from ' + currentTab.url
