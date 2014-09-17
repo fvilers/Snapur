@@ -12,7 +12,8 @@ $(function () {
             };
         
         chrome.tabs.captureVisibleTab(currentTab.windowId, options, function (dataUrl) {
-            console.log(dataUrl);
+            chrome.tabs.create({ url: dataUrl }, function () {
+            });
         });
     });
 });
