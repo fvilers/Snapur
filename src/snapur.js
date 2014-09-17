@@ -29,7 +29,7 @@ $(function () {
                 dataType: 'json'
             }).done(function (json) {
                 $message.text('Opening snapshot from Imgur...');
-                    
+                
                 chrome.tabs.create({ url: json.data.link }, function () {
                     $message.text('');
                 });
