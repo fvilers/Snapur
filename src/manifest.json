@@ -8,7 +8,7 @@
         "default_icon": "icon.png",
         "default_popup": "popup.html"
     },
-    "permissions": [ ],
+    "permissions": [ "tabs" ],
     "icons":
     {
         "16": "icon16.png",
