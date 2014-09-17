@@ -1,4 +1,4 @@
-/*globals $, chrome */
+/*globals $, chrome, console */
 
 $(function () {
     'use strict';
@@ -6,8 +6,13 @@ $(function () {
     var $message = $('#message');
     
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        var currentTab = tabs[0];
+        var currentTab = tabs[0],
+            options = {
+                format: 'png'
+            };
         
-        $message.text("Current tab url is " + currentTab.url);
+        chrome.tabs.captureVisibleTab(currentTab.windowId, options, function (dataUrl) {
+            console.log(dataUrl);
+        });
     });
 });
