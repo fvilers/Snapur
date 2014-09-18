@@ -35,7 +35,7 @@
             };
 
             httpRequest.open("POST", "https://api.imgur.com/3/upload");
-            httpRequest.setRequestHeader("Authorization", "Client-ID f957f05bea2a82a");
+            httpRequest.setRequestHeader("Authorization", "Client-ID 580e21bb1463b5b");
             httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             httpRequest.send(JSON.stringify(data));
         });
