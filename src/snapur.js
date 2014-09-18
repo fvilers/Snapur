@@ -1,10 +1,10 @@
-/*globals $, chrome, console */
+/*globals chrome, console */
 
-$(function () {
+(function () {
     'use strict';
     
-    var $message = $('#message');
-    
+    var message = document.getElementById('message');
+    console.log(message);
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var currentTab = tabs[0],
             options = {
@@ -12,32 +12,32 @@ $(function () {
             };
         
         chrome.tabs.captureVisibleTab(currentTab.windowId, options, function (dataUrl) {
-            $message.text('Uploading snapshot to Imgur...');
+            message.innerHTML = 'Uploading snapshot to Imgur...';
             
-            $.ajax({
-                url: 'https://api.imgur.com/3/image',
-                type: 'POST',
-                headers: {
-                    Authorization: 'Client-ID f957f05bea2a82a'
-                },
-                data: {
-                    image: dataUrl.split(',')[1],
-                    type: 'base64',
-                    title: currentTab.title,
-                    description: 'Snaped from ' + currentTab.url
-                },
-                dataType: 'json'
-            }).done(function (json) {
-                $message.text('Opening snapshot from Imgur...');
+            var httpRequest = new XMLHttpRequest(),
+                data = { image: dataUrl.split(",")[1]  };
+
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === 4) {
+                    var response = JSON.parse(httpRequest.responseText);
+                    
+                    if (httpRequest.status === 200) {
+                        message.innerHTML = 'Opening snapshot from Imgur...';
                 
-                chrome.tabs.create({ url: json.data.link }, function () {
-                    $message.text('');
-                });
-            }).fail(function (xhr) {
-                var response = JSON.parse(xhr.responseText);
-                
-                $('#message').text(response.data.error).addClass('error');
-            });
+                        chrome.tabs.create({ url: response.data.link }, function () {
+                            message.innerHTML = '';
+                        });
+                    } else {
+                        message.innerHTML = response.data.error;
+                        message.classList.add('error');
+                    }
+                }
+            };
+
+            httpRequest.open("POST", "https://api.imgur.com/3/upload");
+            httpRequest.setRequestHeader("Authorization", "Client-ID f957f05bea2a82a");
+            httpRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            httpRequest.send(JSON.stringify(data));
         });
     });
-});
+}());
