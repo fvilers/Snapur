@@ -4,7 +4,7 @@
     'use strict';
     
     var message = document.getElementById('message');
-    console.log(message);
+    
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         var currentTab = tabs[0],
             options = {
